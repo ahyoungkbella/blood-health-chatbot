@@ -149,7 +149,6 @@ if st.button("결과 확인" if is_kr else "Check Eligibility"):
     result_msg = "적합함" if eligible and is_kr else "부적합함" if not eligible and is_kr else "Eligible" if eligible else "Not Eligible"
     summary = f"Age: {age}\nWeight: {weight}kg\nHb: {hb}\nEligible: {result_msg}\nReasons:\n" + "\n".join(reasons)
 
-    st.markdown("<div class='section'>", unsafe_allow_html=True)
     st.subheader("결과 / Result")
     if eligible:
         st.success("✅ 헌혈이 가능합니다!" if is_kr else "✅ You are eligible to donate blood!")
@@ -183,7 +182,6 @@ if st.button("결과 확인" if is_kr else "Check Eligibility"):
 
 # --- Dashboard ---
 if os.path.exists("eligibility_records.csv"):
-    st.markdown("<div class='section'>", unsafe_allow_html=True)
     st.subheader("📊 Dashboard")
     dashboard_df = pd.read_csv("eligibility_records.csv")
     col1, col2 = st.columns(2)
