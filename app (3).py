@@ -88,61 +88,60 @@ text = {
     "lookup": {"English": "Looking up malaria risk...", "한국어": "말라리아 위험 여부 확인 중..."}
 }
 
-# --- Section Header Example ---
+# --- Full Form ---
 st.markdown('<div class="section-box">', unsafe_allow_html=True)
-st.header(f"{text['age'][language]}")
-st.markdown('</div>', unsafe_allow_html=True)
-st.header(f"1. {text['age'][language]} / {text['age']['한국어'] if language == 'English' else text['age']['English']}")
-
+st.subheader(text['age'][language])
 age = st.number_input(text['age'][language], min_value=10, max_value=100, step=1)
+st.subheader(text['weight'][language])
 weight = st.number_input(text['weight'][language], min_value=30.0, step=0.5)
+st.subheader(text['well'][language])
 feeling_well = st.radio(text['well'][language], [text['yes'][language], text['no'][language]])
-
+st.subheader(text['hb_known'][language])
 hb_known = st.radio(text['hb_known'][language], [text['yes'][language], text['no'][language]])
 if hb_known == text['yes'][language]:
     hb = st.number_input(text['hb_level'][language], min_value=5.0, max_value=20.0, step=0.1)
-
+st.subheader(text['gender'][language])
 gender = st.radio(text['gender'][language], ["Female", "Male", "Other"])
 if gender == "Female":
+    st.subheader(text['period'][language])
     menstruating = st.radio(text['period'][language], [text['yes'][language], text['no'][language], "Prefer not to say"])
+    st.subheader(text['pregnant'][language])
     pregnancy = st.radio(text['pregnant'][language], [text['yes'][language], text['no'][language]])
-
+st.subheader(text['donation'][language])
 recent_donation = st.date_input(text['donation'][language], value=datetime.today())
-
+st.subheader(text['meds'][language])
 medication = st.radio(text['meds'][language], [text['yes'][language], text['no'][language]])
+st.subheader(text['tattoo'][language])
 tattoo = st.radio(text['tattoo'][language], [text['yes'][language], text['no'][language]])
-
+st.subheader(text['travel'][language])
 travel = st.radio(text['travel'][language], [text['yes'][language], text['no'][language]])
-region_detail = ""
 malaria_risk = False
+region_detail = ""
 if travel == text['yes'][language]:
     country = st.text_input(text['country'][language])
     region_detail = st.text_input(text['region'][language])
-
     if country and region_detail:
         st.info(text['lookup'][language])
-        try:
-            malaria_dataset = {
-                "Philippines": ["Palawan", "Mindanao", "Sulu"],
-                "India": ["Assam", "Odisha", "Jharkhand", "Chhattisgarh"],
-                "Indonesia": ["Papua", "Kalimantan", "NTT", "Sulawesi"],
-                "Malaysia": ["Sabah", "Sarawak"],
-                "Papua New Guinea": ["Western", "Madang", "East Sepik"],
-                "Thailand": ["Tak", "Ubon Ratchathani", "Yala"],
-                "Myanmar": ["Kayin", "Rakhine", "Chin"],
-                "Vietnam": ["Gia Lai", "Quang Tri"],
-                "Cambodia": ["Pursat", "Ratanakiri"]
-            }
-            risk_regions = malaria_dataset.get(country.title(), [])
-            if any(risk.lower() in region_detail.lower() for risk in risk_regions):
-                malaria_risk = True
-        except:
-            malaria_risk = False
+        malaria_dataset = {
+            "Philippines": ["Palawan", "Mindanao", "Sulu"],
+            "India": ["Assam", "Odisha", "Jharkhand", "Chhattisgarh"],
+            "Indonesia": ["Papua", "Kalimantan", "NTT", "Sulawesi"],
+            "Malaysia": ["Sabah", "Sarawak"],
+            "Papua New Guinea": ["Western", "Madang", "East Sepik"],
+            "Thailand": ["Tak", "Ubon Ratchathani", "Yala"],
+            "Myanmar": ["Kayin", "Rakhine", "Chin"],
+            "Vietnam": ["Gia Lai", "Quang Tri"],
+            "Cambodia": ["Pursat", "Ratanakiri"]
+        }
+        regions = malaria_dataset.get(country.title(), [])
+        if any(risk.lower() in region_detail.lower() for risk in regions):
+            malaria_risk = True
+st.markdown('</div>', unsafe_allow_html=True)
 
+# --- Result Section ---
 if st.button(text['submit'][language]):
     eligible = True
     reasons = []
-
     if age < 16:
         eligible = False
         reasons.append("Under 16")
@@ -155,38 +154,34 @@ if st.button(text['submit'][language]):
     if hb_known == text['yes'][language] and hb < 12.5:
         eligible = False
         reasons.append("Low hemoglobin (<12.5 g/dL)")
-
     try:
-        days_since = (datetime.today() - recent_donation).days
+        if (datetime.today() - recent_donation).days < 56:
+            eligible = False
+            reasons.append("Donated within the last 8 weeks")
     except:
-        days_since = 9999
-    if days_since < 56:
-        eligible = False
-        reasons.append("Donated within last 8 weeks")
-
+        pass
     if medication == text['yes'][language]:
         eligible = False
-        reasons.append("On medication")
+        reasons.append("Currently on medication")
     if tattoo == text['yes'][language]:
         eligible = False
         reasons.append("Recent tattoo or piercing")
     if gender == "Female":
         if menstruating == text['yes'][language]:
-            reasons.append("On period — consider iron level")
+            reasons.append("Currently menstruating")
         if pregnancy == text['yes'][language]:
             eligible = False
             reasons.append("Pregnant or recently gave birth")
+    if travel == text['yes'][language] and malaria_risk:
+        eligible = False
+        reasons.append("Visited malaria-risk area")
 
-    if travel == text['yes'][language]:
-        reasons.append(f"Recent travel to {country} - {region_detail}")
-        if malaria_risk:
-            eligible = False
-            reasons.append("Visited malaria-risk area")
-
+    st.markdown('<div class="section-box">', unsafe_allow_html=True)
     st.subheader(text['result'][language])
     if eligible:
         st.success("✅ You are eligible to donate blood!")
     else:
         st.error("❌ You are not eligible to donate blood at this time.")
         for reason in reasons:
-            st.write(f"- {reason}")
+            st.markdown(f"- {reason}")
+    st.markdown('</div>', unsafe_allow_html=True
