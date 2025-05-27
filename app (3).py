@@ -18,8 +18,8 @@ st.set_page_config(
 def create_pdf(summary_text):
     pdf = FPDF()
     pdf.add_page()
-    pdf.add_font('ArialUnicode', '', '/usr/share/fonts/truetype/noto/NotoSansKR-Regular.otf', uni=True)
-    pdf.set_font('ArialUnicode', '', 12)
+    pdf.set_font('Arial', '', 12)
+
     for line in summary_text.split('\n'):
         pdf.cell(200, 10, txt=line, ln=True)
     return pdf
