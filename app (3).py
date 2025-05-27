@@ -54,14 +54,64 @@ with st.sidebar:
 
 # --- Styling ---
 st.markdown("""<style>
-html, body, [class*='css'] { font-family: 'Helvetica Neue', sans-serif; background-color: #fff5f7; }
-.title-area { text-align: center; padding-top: 1rem; }
-.title-area img { width: 130px; }
-.title-area h1 { font-size: 2.5em; margin-bottom: 0.2em; }
-.title-area p { color: #e63946; font-weight: 500; font-size: 1.2em; }
-.section { background-color: white; padding: 2rem; margin: 2rem auto; border-radius: 14px; border: 1px solid #e5e7eb; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-.photo-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 3rem; }
-.photo-grid img { width: 100%; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+html, body, [class*='css'] {
+    font-family: 'Helvetica Neue', sans-serif;
+    background: linear-gradient(135deg, #fff5f7, #fefefe);
+    color: #111827;
+}
+.title-area {
+    text-align: center;
+    padding-top: 1rem;
+    margin-bottom: 2rem;
+}
+.title-area img {
+    width: 130px;
+    animation: fadeIn 1s ease-in-out;
+}
+.title-area h1 {
+    font-size: 2.8em;
+    margin-bottom: 0.2em;
+    font-weight: 800;
+    color: #d62828;
+}
+.title-area p {
+    color: #e63946;
+    font-weight: 500;
+    font-size: 1.2em;
+    margin-top: 0.2em;
+}
+.section {
+    background-color: white;
+    padding: 2.5rem;
+    margin: 2.5rem auto;
+    border-radius: 20px;
+    border: 2px solid #f3c5c5;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s;
+}
+.section:hover {
+    transform: translateY(-2px);
+}
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+    margin-top: 3rem;
+}
+.photo-grid img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    border: 1px solid #eee;
+    transition: 0.3s ease;
+}
+.photo-grid img:hover {
+    transform: scale(1.02);
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 </style>""", unsafe_allow_html=True)
 
 st.markdown("""<div class='title-area'>
