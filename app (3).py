@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import datetime
 
 st.set_page_config(
-    page_title="혈액 자격 확인 앱: BloodReady",
+    page_title="혈액자격봇 – BloodReady",
     layout="centered",
     initial_sidebar_state="auto",
 )
@@ -21,6 +21,7 @@ st.markdown("""
         border-radius: 0.5rem;
         padding: 0.6em 1.2em;
         font-size: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     .stRadio > div {
         padding: 0.2rem 0;
@@ -35,13 +36,25 @@ st.markdown("""
     .stHeader > h2 {
         color: #444444;
     }
+    .section-box {
+        background-color: #ffffff;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown('<div class="section-box">', unsafe_allow_html=True)
 st.title("BloodReady | 헌혈 가능 여부 자가진단")
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Real-time language toggle
+st.markdown('<div class="section-box">', unsafe_allow_html=True)
 language = st.radio("Select Language / 언어 선택", ["English", "한국어"])
+st.markdown('</div>', unsafe_allow_html=True)
 
 text = {
     "age": {"English": "Age", "한국어": "나이"},
@@ -65,7 +78,9 @@ text = {
     "lookup": {"English": "Looking up malaria risk...", "한국어": "말라리아 위험 여부 확인 중..."}
 }
 
+st.markdown('<div class="section-box">', unsafe_allow_html=True)
 st.header(f"{text['age'][language]}")
+st.markdown('</div>', unsafe_allow_html=True)
 
 st.header(f"1. {text['age'][language]} / {text['age']['한국어'] if language == 'English' else text['age']['English']}")
 
