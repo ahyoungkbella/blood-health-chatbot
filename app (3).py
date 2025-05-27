@@ -2,60 +2,70 @@ import streamlit as st
 from datetime import datetime
 
 st.set_page_config(
-    page_title="혈액자격봇 – BloodReady",
+    page_title="BloodReady | Blood Donation Eligibility",
     layout="centered",
-    initial_sidebar_state="auto",
+    initial_sidebar_state="expanded",
 )
 
+# --- Global Styling ---
 st.markdown("""
 <style>
     html, body, [class*="css"]  {
-        font-family: 'Segoe UI', sans-serif;
-        color: #333333;
-        background-color: #FAFAFA;
+        font-family: 'Helvetica Neue', sans-serif;
+        background-color: #f5f6fa;
+        color: #111827;
+        max-width: 880px;
+        margin: auto;
+    }
+    .stApp {
+        padding: 2rem 1.5rem;
+    }
+    .stTitle > h1 {
+        font-weight: 800;
+        color: #1f2937;
+        border-left: 6px solid #ef4444;
+        padding-left: 14px;
+        font-size: 2.2em;
+        margin-bottom: 0.5em;
     }
     .stButton > button {
-        background-color: #D62828;
+        background-color: #ef4444;
         color: white;
-        font-weight: 600;
-        border-radius: 0.5rem;
-        padding: 0.6em 1.2em;
+        font-weight: bold;
+        border-radius: 0.6rem;
+        padding: 0.7em 1.4em;
         font-size: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: all 0.2s;
+    }
+    .stButton > button:hover {
+        background-color: #dc2626;
+    }
+    .section-box {
+        background-color: white;
+        padding: 2rem;
+        margin: 2rem auto;
+        border-radius: 16px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
     }
     .stRadio > div {
         padding: 0.2rem 0;
     }
-    .stTitle > h1 {
-        font-weight: 700;
-        color: #222222;
-        border-left: 5px solid #D62828;
-        padding-left: 12px;
-        margin-bottom: 1rem;
-    }
-    .stHeader > h2 {
-        color: #444444;
-    }
-    .section-box {
-        background-color: #ffffff;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        border-radius: 12px;
-        border: 1px solid #ddd;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
 </style>
 """, unsafe_allow_html=True)
 
+# --- App Title ---
 st.markdown('<div class="section-box">', unsafe_allow_html=True)
-st.title("BloodReady | 헌혈 가능 여부 자가진단")
+st.title("BloodReady | Blood Donation Eligibility Checker")
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Real-time language toggle
+# --- Language Toggle ---
 st.markdown('<div class="section-box">', unsafe_allow_html=True)
-language = st.radio("Select Language / 언어 선택", ["English", "한국어"])
+language = st.radio("🌐 Select Language / 언어 선택", ["English", "한국어"])
 st.markdown('</div>', unsafe_allow_html=True)
 
+# --- Text Dictionary ---
 text = {
     "age": {"English": "Age", "한국어": "나이"},
     "weight": {"English": "Weight (kg)", "한국어": "체중 (kg)"},
@@ -78,10 +88,10 @@ text = {
     "lookup": {"English": "Looking up malaria risk...", "한국어": "말라리아 위험 여부 확인 중..."}
 }
 
+# --- Section Header Example ---
 st.markdown('<div class="section-box">', unsafe_allow_html=True)
 st.header(f"{text['age'][language]}")
 st.markdown('</div>', unsafe_allow_html=True)
-
 st.header(f"1. {text['age'][language]} / {text['age']['한국어'] if language == 'English' else text['age']['English']}")
 
 age = st.number_input(text['age'][language], min_value=10, max_value=100, step=1)
