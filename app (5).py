@@ -52,7 +52,6 @@ is_kr = language == "한국어"
 
 # --- Sidebar Info ---
 with st.sidebar:
-    st.image("https://blood-health-chatbot.streamlit.app/files/file-SnFRkJPAD4wgV45VizmH6z", use_column_width=True)
     st.markdown("## 🧾 Info")
     if is_kr:
         st.markdown("이 도구는 헌혈 자격 조건을 사전에 확인할 수 있도록 제작되었습니다.")
@@ -181,16 +180,6 @@ if st.button("결과 확인" if is_kr else "Check Eligibility"):
             st.success("📧 PDF sent to your email!")
         except Exception as e:
             st.warning(f"Email failed: {e}")
-
-# --- Gallery ---
-st.markdown("<div class='section'>", unsafe_allow_html=True)
-st.subheader("📸 행사 스냅 | Snapshots")
-st.markdown("""<div class='photo-grid'>
-<img src='https://blood-health-chatbot.streamlit.app/files/file-FzUtSQno4mRzY3VTvPSah6'>
-<img src='https://blood-health-chatbot.streamlit.app/files/file-DwgfFk9VY7Azh1Aqcdahev'>
-<img src='https://blood-health-chatbot.streamlit.app/files/file-Y2SssVJR6RnF1bPMRv6BMZ'>
-</div>""", unsafe_allow_html=True)
-st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Dashboard ---
 if os.path.exists("eligibility_records.csv"):
