@@ -184,4 +184,4 @@ if st.button(text['submit'][language]):
         st.error("❌ You are not eligible to donate blood at this time.")
         for reason in reasons:
             st.markdown(f"- {reason}")
-    st.markdown('</div>', unsafe_allow_html=True
+    st.markdown('</div>', unsafe_allow_html=True)
