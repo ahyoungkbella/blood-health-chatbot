@@ -45,12 +45,13 @@ def send_email(to_email, subject, body, pdf_bytes):
 
 # --- Sidebar ---
 with st.sidebar:
-    st.image("https://i.imgur.com/2aWkI71.png", use_column_width=True)
-    st.markdown("## 🧾 헌혈 자격 요약")
-    st.write("오른쪽 폼을 작성하여 대한적십자사의 헌혈 기준에 따른 자격 여부를 확인해보세요.")
+    st.image("https://blood-health-chatbot.streamlit.app/files/file-SnFRkJPAD4wgV45VizmH6z", use_column_width=True)
+    st.markdown("## 🧾 Blood Donation Summary")
+    st.write("Fill out the form to determine your blood donation eligibility according to the Korean Red Cross.")
     st.markdown("---")
+    st.markdown("This tool is designed to help you pre-check your eligibility before visiting a donation center.")
     st.markdown("이 도구는 헌혈의 집을 방문하기 전, 본인이 자격 조건을 충족하는지 사전에 확인할 수 있도록 돕기 위해 제작되었습니다.")
-    st.markdown("**ABO 서포터즈 공동회장 김아영 Bella 제작**")
+    st.markdown("**Made by Ahyoung Bella Kim, Co-Chair of ABO Supporters**")
 
 # --- Styling ---
 st.markdown("""<style>
@@ -112,10 +113,18 @@ html, body, [class*='css'] {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* Remove floating animation if any */
+[class*='floating'] {
+    animation: none !important;
+    transform: none !important;
+}
+    to { opacity: 1; transform: translateY(0); }
+}
 </style>""", unsafe_allow_html=True)
 
 st.markdown("""<div class='title-area'>
-<img src='https://i.imgur.com/2aWkI71.png' alt='mascot'>
+<img src='https://blood-health-chatbot.streamlit.app/files/file-SnFRkJPAD4wgV45VizmH6z' alt='mascot'>
 <h1>BloodReady | 헌혈 자격 셀프 체크</h1>
 <p>당신의 따뜻함이 생명이 됩니다. <br> Your Warmth Can Save a Life.</p>
 </div>""", unsafe_allow_html=True)
@@ -210,9 +219,48 @@ if st.button("Check Eligibility"):
 st.markdown("<div class='section'>", unsafe_allow_html=True)
 st.subheader("📸 헌혈 행사 스냅 | Snapshots from Blood Donation Event")
 st.markdown("""<div class='photo-grid'>
-<img src='https://i.imgur.com/bRV0gaH.jpeg'>
-<img src='https://i.imgur.com/FQxoLxI.jpeg'>
-<img src='https://i.imgur.com/dpJglnS.jpeg'>
+<img src='https://blood-health-chatbot.streamlit.app/files/file-FzUtSQno4mRzY3VTvPSah6' alt='헌혈 캠페인 1'>
+<img src='https://blood-health-chatbot.streamlit.app/files/file-DwgfFk9VY7Azh1Aqcdahev' alt='헌혈 캠페인 2'>
+<img src='https://blood-health-chatbot.streamlit.app/files/file-Y2SssVJR6RnF1bPMRv6BMZ' alt='헌혈 캠페인 3'>
 </div>""", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
+
+# --- Dashboard Section ---
+st.markdown("<div class='section'>", unsafe_allow_html=True)
+st.subheader("📊 Blood Donation Eligibility Dashboard")
+
+import os
+if os.path.exists("eligibility_records.csv"):
+    df = pd.read_csv("eligibility_records.csv")
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Total Records", len(df))
+        st.metric("Eligible", (df["eligible"] == "Eligible").sum())
+        st.metric("Not Eligible", (df["eligible"] == "Not Eligible").sum())
+    with col2:
+        fig1 = plt.figure()
+        sns.histplot(df["age"], bins=20, kde=True, color="salmon")
+        plt.title("Age Distribution")
+        st.pyplot(fig1)
+
+    col3, col4 = st.columns(2)
+    with col3:
+        fig2 = plt.figure()
+        sns.countplot(data=df, x="gender", palette="pastel")
+        plt.title("Gender Distribution")
+        st.pyplot(fig2)
+
+    with col4:
+        fig3 = plt.figure()
+        sns.countplot(data=df, x="eligible", palette="coolwarm")
+        plt.title("Eligibility Status")
+        st.pyplot(fig3)
+
+    st.subheader("📋 Raw Submission Records")
+    st.dataframe(df)
+else:
+    st.info("No records yet. Please complete the form to generate data.")
 st.markdown("</div>", unsafe_allow_html=True)
 
