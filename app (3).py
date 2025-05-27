@@ -1,9 +1,44 @@
 import streamlit as st
 from datetime import datetime
 
-st.set_page_config(page_title="혈액자격봇 – BloodReady", layout="centered")
+st.set_page_config(
+    page_title="혈액 자격 확인 앱: BloodReady",
+    layout="centered",
+    initial_sidebar_state="auto",
+)
 
-st.title("🩸 BloodReady | 헌혈 가능 여부 자가진단")
+st.markdown("""
+<style>
+    html, body, [class*="css"]  {
+        font-family: 'Segoe UI', sans-serif;
+        color: #333333;
+        background-color: #FAFAFA;
+    }
+    .stButton > button {
+        background-color: #D62828;
+        color: white;
+        font-weight: 600;
+        border-radius: 0.5rem;
+        padding: 0.6em 1.2em;
+        font-size: 1rem;
+    }
+    .stRadio > div {
+        padding: 0.2rem 0;
+    }
+    .stTitle > h1 {
+        font-weight: 700;
+        color: #222222;
+        border-left: 5px solid #D62828;
+        padding-left: 12px;
+        margin-bottom: 1rem;
+    }
+    .stHeader > h2 {
+        color: #444444;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+st.title("BloodReady | 헌혈 가능 여부 자가진단")
 
 # Real-time language toggle
 language = st.radio("Select Language / 언어 선택", ["English", "한국어"])
@@ -29,6 +64,8 @@ text = {
     "no": {"English": "No", "한국어": "아니요"},
     "lookup": {"English": "Looking up malaria risk...", "한국어": "말라리아 위험 여부 확인 중..."}
 }
+
+st.header(f"{text['age'][language]}")
 
 st.header(f"1. {text['age'][language]} / {text['age']['한국어'] if language == 'English' else text['age']['English']}")
 
